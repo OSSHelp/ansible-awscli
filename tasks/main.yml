@@ -1,0 +1,34 @@
+---
+- name: install packages
+  apt:
+    name: "{{ awscli_packages[python_version] }}"
+    update_cache: true
+    install_recommends: no
+    cache_valid_time: 86400
+
+- name: install pip packages
+  pip:
+    name: "{{ pip_packages }}"
+    executable: "{{ pip_binnary[python_version] }}"
+
+- name: create dir /root/.aws
+  file:
+    dest: /root/.aws
+    state: directory
+    mode: 0700
+  when: skip_config is not defined
+
+- name: create awscli config
+  template:
+    src: config.j2
+    dest: /root/.aws/config
+    mode: 0600
+  when: skip_config is not defined
+
+- name: create awscli credentials
+  template:
+    src: credentials.j2
+    dest: /root/.aws/credentials
+    mode: 0600
+  no_log: True
+  when: skip_config is not defined
