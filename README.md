@@ -29,7 +29,7 @@ The role **overwrites** configuration files:
   skip_config: true
 ```
 
-### Use Python2 for awscli
+### Use Python2 for awscli (only for bionic and xenial)
 
 ``` yaml
 - role: awscli
@@ -37,7 +37,23 @@ The role **overwrites** configuration files:
   ...
 ```
 
-## Links
+## FAQ
 
-[Documentation](https://aws.amazon.com/ru/cli/)
-[Python Package](https://pypi.org/project/awscli/)
+...
+
+## Useful links
+
+- [Documentation](https://aws.amazon.com/ru/cli/)
+- [Python Package](https://pypi.org/project/awscli/)
+
+## TODO
+
+...
+
+## License
+
+GPL3
+
+## Author
+
+OSSHelp Team, see <https://oss.help>
