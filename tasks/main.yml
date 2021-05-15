@@ -10,6 +10,7 @@
   pip:
     name: "{{ pip_packages }}"
     executable: "{{ pip_binnary[python_version] }}"
+  when: not ansible_check_mode
 
 - name: create dir /root/.aws
   file:
@@ -23,7 +24,7 @@
     src: config.j2
     dest: /root/.aws/config
     mode: 0600
-  when: skip_config is not defined
+  when: skip_config is not defined and not ansible_check_mode
 
 - name: create awscli credentials
   template:
@@ -31,4 +32,4 @@
     dest: /root/.aws/credentials
     mode: 0600
   no_log: True
-  when: skip_config is not defined
+  when: skip_config is not defined and not ansible_check_mode
