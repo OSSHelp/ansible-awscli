@@ -1,23 +1,28 @@
 ---
-python_version: 3
 
+awscli_python_version: 3
 awscli_packages:
+  2:
+    - python-pip
+    - python-setuptools
   3:
     - python3-pip
     - python-setuptools
     - python3-setuptools
-  2:
-    - python-pip
-    - python-setuptools
 
-pip_binnary:
-  3: pip3
+awscli_pip_binary:
   2: pip
+  3: pip3
 
-pip_packages:
+awscli_pip_packages:
   - awscli
 
-region: eu-west-2
-output_format: json
-aws_key: "aws_secret_access_key here"
-aws_id: "aws_access_key_id here"
+awscli_custom_pip_packages: []
+awscli_plugins_params: []
+awscli_default_output_format: json
+awscli_default_region: local
+
+awscli_profiles:
+  - name: default
+    secret_access_key: "SomeSecretAccessKey"
+    access_key_id: "SomeAccessKeyID"

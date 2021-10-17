@@ -1,4 +1,18 @@
-[default]
-output = {{ output_format }}
-region = {{ region }}
+{% if awscli_plugins_params is defined and awscli_plugins_params|length %}
+[plugins]
+{% for key, value in awscli_plugins_params.items() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endif %}
+{% for profile in awscli_profiles %}
 
+[profile {{ profile.name }}]
+output = {{ profile.output|default(awscli_default_output_format, true) }}
+region = {{ profile.region|default(awscli_default_region, true) }}
+{% if profile.s3 is defined and profile.s3|length %}
+s3 =
+{% for key, value in profile.s3.items() %}
+{{ key|indent(4, True) }} = {{ value }}
+{% endfor %}
+{% endif %}
+{% endfor %}

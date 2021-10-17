@@ -4,38 +4,56 @@
 
 ## Description
 
-Simple role for Ansible, which installs AWS CLI.
+Simple role for Ansible, which installs and configures AWS CLI.
 
 The role **overwrites** configuration files:
 
-- /root/.aws/config
-- /root/.aws/credentials
+- `/root/.aws/config`
+- `/root/.aws/credentials`
 
-## Deploy examples
+## Usage example
 
-### Default example (with aws credentials, python3)
-
-``` yaml
-- role: awscli
-  region: eu-west-2
-  aws_key: "aws_secret_access_key here"
-  aws_id: "aws_access_key_id here"
-```
-
-### Without awscli config generation
+### Default example (with aws credentials, python3 and s3 support)
 
 ``` yaml
-- role: awscli
-  skip_config: true
+    - role: awscli
+      awscli_custom_pip_packages:
+        - awscli-plugin-endpoint
+      awscli_plugins_params:
+        endpoint: awscli_plugin_endpoint
+      awscli_profiles:
+        - name: default
+          secret_access_key: "some_default_secret_access_key"
+          access_key_id: "some_default_access_key_id"
+        - name: custom
+          region: local
+          output: json
+          secret_access_key: "some_custom_secret_access_key"
+          access_key_id: "some_custom_access_key_id"
+          s3:
+            signature_version: s3v4
+            endpoint_url: https://domain.tld/
+            max_concurrent_requests: 20
+            max_bandwidth: 50MB/s
 ```
 
-### Use Python2 for awscli (only for bionic and xenial)
+### Without configs generation
 
 ``` yaml
-- role: awscli
-  python_version: 2
-  ...
+    - role: awscli
+      awscli_skip_config: true
 ```
+
+## Available parameters
+
+| Param | Default | Description |
+| -------- | -------- | -------- |
+| `awscli_python_version`| `3` | Python version to use. |
+| `awscli_custom_pip_packages` | `[]` | List of additional pip packages to install. |
+| `awscli_plugins_params`| `[]` | List of custom plugin params (`[plugins]` section will be generated for them in main cfg). |
+| `awscli_default_output_format`| `json` | Output format to use as default (if no overrides in `awscli_profiles`). |
+| `awscli_default_region`| `local` | Region to use as default (if no overrides in `awscli_profiles`). |
+| `awscli_profiles`| see [defaults](defaults/main.yml) | Param for describing needed profiles. |
 
 ## FAQ
 
