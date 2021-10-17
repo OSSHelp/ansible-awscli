@@ -23,13 +23,13 @@ The role **overwrites** configuration files:
         endpoint: awscli_plugin_endpoint
       awscli_profiles:
         - name: default
-          secret_access_key: "some_default_secret_access_key"
           access_key_id: "some_default_access_key_id"
+          secret_access_key: "some_default_secret_access_key"
         - name: custom
           region: local
           output: json
-          secret_access_key: "some_custom_secret_access_key"
           access_key_id: "some_custom_access_key_id"
+          secret_access_key: "some_custom_secret_access_key"
           s3:
             signature_version: s3v4
             endpoint_url: https://domain.tld/
