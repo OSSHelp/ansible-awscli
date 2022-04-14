@@ -1,5 +1,10 @@
 ---
 
+- name: gather required facts
+  setup:
+    gather_subset: [min, virtual]
+  when: ansible_distribution_release is not defined
+
 - name: install packages
   apt:
     name: "{{ awscli_packages[awscli_python_version] }}"
@@ -12,6 +17,14 @@
     name: "{{ awscli_pip_packages + awscli_custom_pip_packages }}"
     executable: "{{ awscli_pip_binary[awscli_python_version] }}"
   when: not ansible_check_mode
+  changed_when: "'molecule-idempotence-notest' not in ansible_skip_tags"
+
+- name: pin boto3 version for xenial
+  pip:
+    name: "boto3==1.17.112"
+    executable: "{{ awscli_pip_binary[awscli_python_version] }}"
+  when: ansible_distribution_release == 'xenial' and not ansible_check_mode
+  changed_when: "'molecule-idempotence-notest' not in ansible_skip_tags"
 
 - name: prepare configuration files
   block:
